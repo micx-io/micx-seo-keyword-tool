@@ -59,7 +59,7 @@ KaToolsV1.ce_define("seo-keyword-tool", function($tpl) {
 
 
 
-    <textarea ka.ref="'textarea1'" ka.on.keyup="$fn.update()" class="w-100 mb-2" placeholder="Bitte Text hier eingeben"></textarea>
+    <textarea ka.ref="'textarea1'" ka.on.keyup="$fn.update()" ka.on.change="$fn.update()" class="w-100 mb-2" placeholder="Bitte Text hier eingeben"></textarea>
     <span>Sprache: </span><select ka.options="languages" ka.on.change="$fn.update()" ka.bind="$scope.lang"></select>
     <span> Methode: </span><select ka.options="methods" ka.on.change="$fn.update()" ka.bind="$scope.method"></select>
 
