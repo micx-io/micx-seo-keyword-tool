@@ -53,14 +53,21 @@ KaToolsV1.ce_define("seo-keyword-tool", function($tpl) {
 
 }, KaToolsV1.html`
 
-    <textarea ka.ref="'textarea1'" ka.on.keyup="$fn.update()" class="w-100" ></textarea>
+<section class="card">
+    <div class="card-body">
+
+
+
+
+    <textarea ka.ref="'textarea1'" ka.on.keyup="$fn.update()" class="w-100 mb-2" placeholder="Bitte Text hier eingeben"></textarea>
     <span>Sprache: </span><select ka.options="languages" ka.on.change="$fn.update()" ka.bind="$scope.lang"></select>
     <span> Methode: </span><select ka.options="methods" ka.on.change="$fn.update()" ka.bind="$scope.method"></select>
 
     <div class="row mt-3" ka.if="result !== null">
+        <h4 class="mt-5 mb-3">Analyseergebnis</h4>
         <div class="col-6">
             <div class="card " ka.if="result.important !== null">
-                <div class="card-header">Important sentence</div>
+                <div class="card-header"><h5>Important sentence</h5></div>
                 <div class="card-body">
                     <p ka.for="let key in result.important">[[key]]: [[result.important[key] ]]</p>
                 </div>
@@ -69,7 +76,7 @@ KaToolsV1.ce_define("seo-keyword-tool", function($tpl) {
 
         <div class="col-6">
             <div class="card " ka.if="result.summarize !== null">
-                <div class="card-header">Summary</div>
+                <div class="card-header"><h5>Summary</h5></div>
                 <div class="card-body">
                     <p ka.for="let key in result.summarize">[[key]]: [[result.summarize[key] ]]</p>
                 </div>
@@ -82,8 +89,8 @@ KaToolsV1.ce_define("seo-keyword-tool", function($tpl) {
     <table ka.if="result !== null" class="table table-hover">
         <thead>
             <tr>
-                <td>Keyword</td>
-                <td>Score</td>
+                <td class="fw-bold">Keyword</td>
+                <td class="fw-bold">Score</td>
 
             </tr>
         </thead>
@@ -95,7 +102,7 @@ KaToolsV1.ce_define("seo-keyword-tool", function($tpl) {
         </tbody>
     </table>
 
-
-    <pre><code>[[JSON.stringify(result)]]</code></pre>
+    </div>
+</section>
 
 `);
