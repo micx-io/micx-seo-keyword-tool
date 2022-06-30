@@ -1,0 +1,32 @@
+## From: github.com/nfra-project/kickstart-skel
+##
+## Build on push to braches
+##
+## Examples
+## Branch: release/1.1   -> ghcr.io/some/repo:1.1
+
+name: RELEASE_build_and_push_to_github
+
+## SECURITY: Do not youe "pull_request_target" nr "pull_request" here! See
+## https://securitylab.github.com/research/github-actions-preventing-pwn-requests/
+on:
+  push:
+    branches:
+      - release/[0-9]+.[0-9]+
+
+jobs:
+  build_and_push_github:
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+    steps:
+      - uses: actions/checkout@v1
+      - name: Build
+        run: "CI_BUILD_NAME=${GITHUB_REF#refs/heads/release/} CI_REGISTRY_IMAGE=$CI_REGISTRY/$GITHUB_REPOSITORY ./.kicker/kickstart.static.sh ci-build"
+        env:
+          CI_REGISTRY: ghcr.io
+          CI_REGISTRY_USER: giblab-user
+          CI_REGISTRY_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+
+
+

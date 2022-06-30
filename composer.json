@@ -1,0 +1,49 @@
+{
+  "name": "micx/seo-keyword-tool",
+  "description": "Keyword Analyzer Service",
+  "license": "MIT",
+  "homepage": "https://infracamp.org/project/phore",
+  "authors": [
+    { "name": "Matthias Leuffen", "email": "m@tth.es" }
+  ],
+  "repositories": [
+  ],
+  "require": {
+    "php": ">=8.1",
+    "ext-json": "*",
+    "ext-openssl": "*",
+    "brace/core": "*",
+    "brace/dbg": "*",
+    "brace/mod-session": "*",
+    "brace/mod-cors": "*",
+    "brace/mod-body": "*",
+    "brace/mod-router": "*",
+    "brace/mod-request-laminas": "*",
+    "phore/core": "*",
+    "phore/hydrator": "*",
+    "lack/subscription": "dev-main",
+    "donatello-za/rake-php-plus": "^1.0",
+    "php-science/textrank": "^1.2"
+
+  },
+  "require-dev": {
+    "phore/tester": "*"
+  },
+  "suggest": {
+  },
+  "autoload": {
+    "psr-4": {
+      "Micx\\SeoKeywordTool\\": "src/"
+    },
+    "files": [
+      "config.php"
+    ]
+  },
+  "autoload-dev": {
+    "psr-4": { "Phore\\Tests\\": "tests/" }
+  },
+  "minimum-stability": "dev",
+  "config": {
+    "preferred-install": "source"
+  }
+}

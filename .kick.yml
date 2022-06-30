@@ -1,0 +1,21 @@
+version: 1
+from: "ghcr.io/nfra-project/kickstart-flavor-php:8.1"
+ports: "80:80"
+
+packages: [php8.1-curl, php8.1-http, php8.1-raphf, php8.1-redis, php8.1-sqlite, whois]
+
+config_file:
+  template: "config.php.dist"
+  target: "config.php"
+
+command:
+  build:
+    - "composer update"
+    - "sudo mkdir /config && sudo chmod 777 /config"
+
+
+  run:
+  dev:
+  test:
+
+

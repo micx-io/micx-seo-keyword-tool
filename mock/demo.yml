@@ -1,0 +1,4 @@
+subscription_id: demo
+allow_origins:
+  - http://localhost2
+

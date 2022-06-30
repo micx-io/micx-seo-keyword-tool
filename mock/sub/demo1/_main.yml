@@ -1,0 +1,13 @@
+version: 1
+active: true
+subscription_id: demo1
+desc: ""
+origin: "http://localhost"
+allow_origins:
+  - "http://localhost"
+  - "https://leuffen.de"
+
+public:
+  public_config: "*"
+private:
+  private_config: "*"
