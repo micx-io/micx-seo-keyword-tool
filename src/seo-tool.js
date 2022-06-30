@@ -26,7 +26,7 @@ const MicxSeoKeywordTool = {
 }
 
 
-KaToolsV1.ce_define("seo-text", function($tpl) {
+KaToolsV1.ce_define("seo-keyword-tool", function($tpl) {
     let scope = {
         text: "",
         lang: "de_DE",
