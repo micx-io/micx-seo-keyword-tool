@@ -44,7 +44,7 @@ class AnalyzeCtrl implements RoutableCtrl
         return [
             "keywords" => $api->getOnlyKeyWords($request->text),
             "important" => $api->getHighlights($request->text),
-            "summarize" => $api->summarizeTextBasic($request->text)
+            "summarize" => $api->summarizeTextCompound($request->text)
         ];
     }
 

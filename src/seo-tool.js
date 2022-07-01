@@ -37,7 +37,7 @@ KaToolsV1.ce_define("seo-keyword-tool", function($tpl) {
 
         $fn: {
             update: async () => {
-                scope.$ref.textarea1.rows = scope.text.split(/\n|\r|\r\n/g).length + 1
+
                 scope.text = scope.$ref.textarea1.value;
                 await KaToolsV1.debounce(1000,1000000);
 
@@ -57,50 +57,46 @@ KaToolsV1.ce_define("seo-keyword-tool", function($tpl) {
     <div class="card-body">
 
 
+        <div class="row">
+            <div class="col-8">
+                <textarea ka.ref="'textarea1'" ka.on.keyup="$fn.update()" ka.on.change="$fn.update()" class="w-100 h-100 mb-2" placeholder="Bitte Text hier eingeben"></textarea>
 
+            </div>
 
-    <textarea ka.ref="'textarea1'" ka.on.keyup="$fn.update()" ka.on.change="$fn.update()" class="w-100 mb-2" placeholder="Bitte Text hier eingeben"></textarea>
-    <span>Sprache: </span><select ka.options="languages" ka.on.change="$fn.update()" ka.bind="$scope.lang"></select>
-    <span> Methode: </span><select ka.options="methods" ka.on.change="$fn.update()" ka.bind="$scope.method"></select>
+            <div class="col-4">
+                <span>Sprache: </span><select ka.options="languages" ka.on.change="$fn.update()" ka.bind="$scope.lang"></select>
+                <span> Methode: </span><select ka.options="methods" ka.on.change="$fn.update()" ka.bind="$scope.method"></select>
+                <div class="card overflow-scroll" style="max-height: 300px" ka.if="result.important !== null">
+                    <p class="fw-bold">Key Sentence</p>
 
-    <div class="row mt-3" ka.if="result !== null">
-        <h4 class="mt-5 mb-3">Analyseergebnis</h4>
-        <div class="col-6">
-            <div class="card " ka.if="result.important !== null">
-                <div class="card-header"><h5>Important sentence</h5></div>
-                <div class="card-body">
                     <p ka.for="let key in result.important">[[key]]: [[result.important[key] ]]</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-6">
-            <div class="card " ka.if="result.summarize !== null">
-                <div class="card-header"><h5>Summary</h5></div>
-                <div class="card-body">
+                    <p class="fw-bold">Summary:</p>
                     <p ka.for="let key in result.summarize">[[key]]: [[result.summarize[key] ]]</p>
+
                 </div>
+                <table ka.if="result !== null" class="table table-hover overflow-scroll" style="max-height: 250px">
+                    <thead>
+                        <tr>
+                            <td class="fw-bold">Keyword</td>
+                            <td class="fw-bold">Score</td>
+
+                        </tr>
+                    </thead>
+                    <tbody class=" " >
+                    <tr ka.for="let keyword in result.keywords" >
+                        <td>[[keyword]]</td>
+                        <td>[[ result.keywords[keyword].toPrecision(3) ]]</td>
+
+
+                    </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
 
-    </div>
 
 
-    <table ka.if="result !== null" class="table table-hover">
-        <thead>
-            <tr>
-                <td class="fw-bold">Keyword</td>
-                <td class="fw-bold">Score</td>
 
-            </tr>
-        </thead>
-        <tbody>
-        <tr ka.for="let keyword in result.keywords">
-            <td>[[keyword]]</td>
-            <td>[[ result.keywords[keyword].toPrecision(3) ]]</td>
-        </tr>
-        </tbody>
-    </table>
 
     </div>
 </section>
