@@ -25,8 +25,18 @@ class AnalyzeCtrl implements RoutableCtrl
 
     protected function analyzeRake (T_AnalyzeRequest $request) {
         $rake = RakePlus::create($request->text, $request->lang);
+
+        $ret = [];
+        foreach ($rake->sortByScore("desc")->scores() as $key => $value) {
+            $ret[] = [
+                "keyword" => $key,
+                "score" => $value,
+                "num" => substr_count(strtolower($request->text), $key)
+            ];
+        }
+
         return [
-            "keywords" => $rake->sortByScore("desc")->scores(),
+            "keywords" => $ret,
             "important" => null,
             "summarize" => null
         ];
@@ -44,16 +54,22 @@ class AnalyzeCtrl implements RoutableCtrl
         }
         $keywords = $api->getOnlyKeyWords($request->text);
         $index = 0;
+        $return = [];
         foreach ($keywords as $key => $val) {
             if (is_numeric($key)) {
                 unset($keywords[$key]);
                 continue;
             }
             if ($index++ > 25)
-                unset($keywords[$key]);
+                break;
+            $return[] = [
+                "keyword" => $key,
+                "score" => $val,
+                "num" => substr_count(strtolower($request->text), $key)
+            ];
         }
         return [
-            "keywords" => $keywords,
+            "keywords" => $return,
             "important" => $api->getHighlights($request->text),
             "summarize" => $api->summarizeTextCompound($request->text)
         ];

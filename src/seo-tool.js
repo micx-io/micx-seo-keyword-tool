@@ -123,14 +123,16 @@ KaToolsV1.ce_define("seo-keyword-tool", function($tpl) {
                         <thead>
                             <tr>
                                 <td class="fw-bold">Keyword</td>
+                                <td class="fw-bold">Num</td>
                                 <td class="fw-bold">Score</td>
 
                             </tr>
                         </thead>
                         <tbody class=" " style="max-height: 120px">
-                        <tr ka.for="let keyword in result.keywords" >
-                            <td>[[keyword]]</td>
-                            <td>[[ result.keywords[keyword].toPrecision(3) ]]</td>
+                        <tr ka.for="let keyword of result.keywords" >
+                            <td>[[keyword.keyword]]</td>
+                            <td>[[keyword.num]]</td>
+                            <td>[[ keyword.score.toPrecision(3) ]]</td>
 
 
                         </tr>
