@@ -34,6 +34,7 @@ const MicxSeoKeywordTool = {
 
 KaToolsV1.ce_define("seo-keyword-tool", function($tpl) {
     let scope = {
+        fullsize: false,
         text: "",
         lang: "de_DE",
         method: "TEXTRANK",
@@ -55,6 +56,10 @@ KaToolsV1.ce_define("seo-keyword-tool", function($tpl) {
                 scope.text = await MicxSeoKeywordTool.loadHtml(url);
                 scope.$ref.textarea1.value = scope.text;
                 await scope.$fn.update();
+            },
+            toggleFullsize: () => {
+                scope.fullsize = ! scope.fullsize;
+                $tpl.render();
             }
         }
     }
@@ -63,9 +68,26 @@ KaToolsV1.ce_define("seo-keyword-tool", function($tpl) {
 
 
 }, KaToolsV1.html`
+<style>
+.fullsize {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    margin: 2px;
+    padding-bottom: 60px;
 
-<section class="card">
-    <div class="card-body">
+}
+</style>
+<section class="card" ka.classlist.fullsize="fullsize">
+    <div class="card-header">
+        <span class="fs-3">Leuffen.de Keyword Tool</span>
+        <button class="btn position-absolute btn-outline end-0" ka.on.click="$fn.toggleFullsize()">
+            <i class="bi bi-arrows-fullscreen" ></i>
+        </button>
+    </div>
+    <div class="card-body h-100">
         <div class="row">
             <div class="col-8">
                     <input type="url" class="w-75 mb-3" ka.ref="'url1'" placeholder="http://xyz.de/path/file.html"><button ka.on.click="$fn.loadHtml($ref.url1.value)">Load Data</button>
@@ -73,19 +95,19 @@ KaToolsV1.ce_define("seo-keyword-tool", function($tpl) {
             </div>
             <div class="col-4">
                 <span>Sprache: </span><select ka.options="languages" ka.on.change="$fn.update()" ka.bind="$scope.lang"></select>
-                <span> Methode: </span><select ka.options="methods" ka.on.change="$fn.update()" ka.bind="$scope.method"></select>
+                <span class="ms-3"> Algo: </span><select ka.options="methods" ka.on.change="$fn.update()" ka.bind="$scope.method"></select>
             </div>
         </div>
-        <div class="row">
-            <div class="col-8">
+        <div class="row h-100">
+            <div class="col-8 position-relative">
 
 
-                <textarea ka.ref="'textarea1'" ka.on.keyup="$fn.update()" ka.on.change="$fn.update()" class="w-100 h-100 mb-2" placeholder="Bitte Text hier eingeben"></textarea>
+                <textarea ka.ref="'textarea1'" ka.on.keyup="$fn.update()" ka.on.change="$fn.update()" class="position-relative w-100 " style="height: 95%" placeholder="Bitte Text hier eingeben"></textarea>
             </div>
 
-            <div class="col-4">
+            <div class="col-4 h-100 position-relative">
 
-                <div class="card overflow-scroll p-1" style="max-height: 300px" ka.if="result.important !== null">
+                <div class="card overflow-scroll p-1 mb-2 position-relative w-100" style="max-height:40%; height: 40%;" ka.if="result.important !== null">
                     <p class="fw-bold">Key Sentence</p>
 
                     <p ka.for="let key in result.important">[[key]]: [[result.important[key] ]]</p>
@@ -93,23 +115,25 @@ KaToolsV1.ce_define("seo-keyword-tool", function($tpl) {
                     <p ka.for="let key in result.summarize">[[key]]: [[result.summarize[key] ]]</p>
 
                 </div>
-                <table ka.if="result !== null" class="table table-hover overflow-scroll" style="max-height: 250px">
-                    <thead>
-                        <tr>
-                            <td class="fw-bold">Keyword</td>
-                            <td class="fw-bold">Score</td>
+                <div class="card overflow-scroll p-1 position-relative w-100" style="max-height:50%; height: 55%;">
+                    <table ka.if="result !== null" class="table table-hover overflow-scroll" >
+                        <thead>
+                            <tr>
+                                <td class="fw-bold">Keyword</td>
+                                <td class="fw-bold">Score</td>
+
+                            </tr>
+                        </thead>
+                        <tbody class=" " style="max-height: 120px">
+                        <tr ka.for="let keyword in result.keywords" >
+                            <td>[[keyword]]</td>
+                            <td>[[ result.keywords[keyword].toPrecision(3) ]]</td>
+
 
                         </tr>
-                    </thead>
-                    <tbody class=" " >
-                    <tr ka.for="let keyword in result.keywords" >
-                        <td>[[keyword]]</td>
-                        <td>[[ result.keywords[keyword].toPrecision(3) ]]</td>
-
-
-                    </tr>
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 
