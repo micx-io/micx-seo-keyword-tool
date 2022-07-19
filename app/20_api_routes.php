@@ -21,9 +21,10 @@ AppLoader::extend(function (BraceApp $app) {
         $data .= file_get_contents(__DIR__ . "/../src/seo-tool.js");
 
         $data = str_replace(
-            ["%%ENDPOINT_URL%%", "%%ERROR%%", "%%TLDS%%"],
+            ["%%ENDPOINT_URL%%", "%%SUBSCRIPTION_ID%%"],
             [
-                "//" . $app->request->getUri()->getHost() . "$mount/analyze?subscription_id=$subscription->subscription_id",
+                "//" . $app->request->getUri()->getHost() . "$mount",
+                $subscription->subscription_id
             ],
             $data
         );

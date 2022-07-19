@@ -9,12 +9,12 @@
 
 const MicxSeoKeywordTool = {
   attrs: {
-    "subscription_id": "%%SERVICE_ID%%",
+    "subscription_id": "%%SUBSCRIPTION_ID%%",
     "endpoint_url": "%%ENDPOINT_URL%%",
     "debug": false
   },
   query: async (text, lang, method) => {
-      let result = await fetch(MicxSeoKeywordTool.attrs.endpoint_url, {
+      let result = await fetch(MicxSeoKeywordTool.attrs.endpoint_url + "/analyze?subscription_id=" + MicxSeoKeywordTool.attrs.subscription_id, {
           method: "post",
           body: JSON.stringify({text, lang, method}),
           headers: {
@@ -22,6 +22,12 @@ const MicxSeoKeywordTool = {
           }
       });
       return await result.json();
+  },
+  loadHtml: async(url) => {
+     let result = await fetch(MicxSeoKeywordTool.attrs.endpoint_url + "/loadhtml?url="+ encodeURIComponent(url) +"&subscription_id=" + MicxSeoKeywordTool.attrs.subscription_id, {
+          method: "get"
+      });
+      return (await result.json()).html;
   }
 }
 
@@ -44,6 +50,11 @@ KaToolsV1.ce_define("seo-keyword-tool", function($tpl) {
                 scope.result = await MicxSeoKeywordTool.query(scope.text, scope.lang, scope.method)
 
                 $tpl.render();
+            },
+            loadHtml: async (url) => {
+                scope.text = await MicxSeoKeywordTool.loadHtml(url);
+                scope.$ref.textarea1.value = scope.text;
+                await scope.$fn.update();
             }
         }
     }
@@ -55,18 +66,26 @@ KaToolsV1.ce_define("seo-keyword-tool", function($tpl) {
 
 <section class="card">
     <div class="card-body">
-
-
         <div class="row">
             <div class="col-8">
-                <textarea ka.ref="'textarea1'" ka.on.keyup="$fn.update()" ka.on.change="$fn.update()" class="w-100 h-100 mb-2" placeholder="Bitte Text hier eingeben"></textarea>
+                    <input type="url" class="w-75 mb-3" ka.ref="'url1'" placeholder="http://xyz.de/path/file.html"><button ka.on.click="$fn.loadHtml($ref.url1.value)">Load Data</button>
 
             </div>
-
             <div class="col-4">
                 <span>Sprache: </span><select ka.options="languages" ka.on.change="$fn.update()" ka.bind="$scope.lang"></select>
                 <span> Methode: </span><select ka.options="methods" ka.on.change="$fn.update()" ka.bind="$scope.method"></select>
-                <div class="card overflow-scroll" style="max-height: 300px" ka.if="result.important !== null">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-8">
+
+
+                <textarea ka.ref="'textarea1'" ka.on.keyup="$fn.update()" ka.on.change="$fn.update()" class="w-100 h-100 mb-2" placeholder="Bitte Text hier eingeben"></textarea>
+            </div>
+
+            <div class="col-4">
+
+                <div class="card overflow-scroll p-1" style="max-height: 300px" ka.if="result.important !== null">
                     <p class="fw-bold">Key Sentence</p>
 
                     <p ka.for="let key in result.important">[[key]]: [[result.important[key] ]]</p>
@@ -93,10 +112,6 @@ KaToolsV1.ce_define("seo-keyword-tool", function($tpl) {
                 </table>
             </div>
         </div>
-
-
-
-
 
     </div>
 </section>
