@@ -68,11 +68,12 @@ class AnalyzeCtrl implements RoutableCtrl
 
         if ($url->getScheme() !== "http" && $url->getScheme() !== "https")
              throw new \InvalidArgumentException("Invalid scheme");
-        if ($url->getPort() !== null)
-            throw new \InvalidArgumentException("Port not allowed");
+
+        if ($url->getQuery() !== null || $url->getUser() !== null || $url->getPass() !== null || $url->getPort() !== null)
+            throw new \InvalidArgumentException("Query not allowed");
 
         ini_set("memory_limit", "8M");
-        $text = phore_http_request($url)->send()->getBody();
+        $text = phore_http_request($url)->withMethod("GET")->withTimeout(1, 2)->send()->getBody();
         $text = preg_replace("|(</.+?>)|msi", "$1\n", $text);
         $text = preg_replace("|<!--.*?-->|msi", " ", $text);
         $text = preg_replace("|<script.*?>.*?</script>|msi", " ", $text);
