@@ -615,8 +615,8 @@ KaToolsV1.Template = class {
                 }
 
                 KaToolsV1.apply(el, $scope);
-                if (el instanceof HTMLElement && el.tagName.indexOf("-") !== -1)
-                    return false; // Skip CustomElements, must have - in name, (apply but don't go into elements)
+                if (el instanceof HTMLElement && (el.hasAttribute("ka.stop") || el instanceof KaToolsV1.CustomElement))
+                    return false; // Skip Element rendering
             }, true, true);
         }
     }
@@ -834,7 +834,14 @@ KaToolsV1.provider = new class {
  * @param options
  * @returns {Promise<void>}
  */
-KaToolsV1.ce_define = async (elementName, controller, template=null, options={waitEvent: null}) => {
+KaToolsV1.ce_define = async (elementName, controller, template=null, options={waitEvent: null, shadowDom: false, shadowDomOptions: {mode: 'open'}}) => {
+    let opts = {
+        waitEvent: null,
+        shadowDom: false,
+        shadowDomOptions: {mode: 'open'},
+        ...options
+    }
+
     template = await template;
     let ctrlClass = null;
     if ( KaToolsV1.is_constructor(controller)) {
@@ -846,7 +853,7 @@ KaToolsV1.ce_define = async (elementName, controller, template=null, options={wa
     }
 
     ctrlClass.__tpl = template;
-    ctrlClass.__options = options;
+    ctrlClass.__options = opts;
 
     customElements.define(elementName, ctrlClass);
 
@@ -961,7 +968,14 @@ KaToolsV1.CustomElement = class extends HTMLElement {
                 origTpl = await origTpl.load();
 
             let tpl = KaToolsV1.templatify(origTpl);
-            this.appendChild(tpl);
+
+            if (this.constructor.__options.shadowDom === true) {
+                let shadowDom = this.attachShadow(this.constructor.__options.shadowDomOptions);
+                shadowDom.appendChild(tpl);
+            } else {
+                this.appendChild(tpl);
+            }
+
             this.__tpl = new KaToolsV1.Template(tpl);
         }
 
