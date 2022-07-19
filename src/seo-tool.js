@@ -70,6 +70,7 @@ KaToolsV1.ce_define("seo-keyword-tool", function($tpl) {
 }, KaToolsV1.html`
 <style>
 .fullsize {
+    z-index: 999999;
     position: fixed;
     top: 0;
     bottom: 0;
