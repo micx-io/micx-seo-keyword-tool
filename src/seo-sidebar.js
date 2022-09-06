@@ -30,9 +30,9 @@ KaToolsV1.ce_define("seo-sidebar", async function($tpl) {
 
 }
 </style>
-<section class="card position-fixed bottom-0 start-0 end-0 bg-white" style="height: 20px">
+<section class="card position-fixed bottom-0 start-0 end-0 bg-white" style="height: 20px; z-index: 99999;">
 
-    <div ka.if="result !== null" class="overflow-scroll p-0  text-nowrap overflow-hidden" style="font-size: 10px">
+    <div ka.if="result !== null" class="overflow-scroll p-0 bg-white text-nowrap overflow-hidden" style="font-size: 10px">
         <span>Seo-Tool Keywords: [[ $fn.wordCount(document.body.textContent) ]]</span>
         <span ka.for="let keyword of result.keywords" class="ms-2" ka.if="keyword.score > 0.5">
             <b>[[keyword.keyword]]</b> [[keyword.num]] : [[ keyword.score.toPrecision(3) ]]
