@@ -52,6 +52,9 @@ class AnalyzeCtrl implements RoutableCtrl
                 $api->setStopWords(new German());
                 break;
         }
+        $request->text = str_replace("\n\n", ".", $request->text);
+        $request->text = preg_replace("/\.+/", ".", $request->text);
+
         $keywords = $api->getOnlyKeyWords($request->text);
         $index = 0;
         $return = [];
