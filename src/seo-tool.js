@@ -33,6 +33,17 @@ const MicxSeoKeywordTool = {
 
 
 KaToolsV1.ce_define("seo-keyword-tool", function($tpl) {
+    let caretTo = function (el, index) {
+        const selection = window.getSelection();
+        const range = document.createRange();
+        selection.removeAllRanges();
+        range.selectNodeContents(el);
+        range.setStart(el, index-1);
+        range.setEnd(el, index-1);
+        selection.addRange(range);
+        el.focus();
+    };
+
     let scope = {
         fullsize: false,
         text: "",
@@ -43,18 +54,32 @@ KaToolsV1.ce_define("seo-keyword-tool", function($tpl) {
         result: null,
 
         $fn: {
+
+            highlight: (word, color) => {
+                let c = scope.$ref.textarea1.innerHTML;
+
+                c = c.replaceAll(new RegExp(word, "ig"), (str) => {
+                    return `<span style="background-color: ${color}">${str}</span>`
+                });
+                let focusOffset = document.getSelection().focusOffset;
+                console.log(focusOffset)
+                scope.$ref.textarea1.innerHTML = c;
+                caretTo(scope.$ref.textarea1, focusOffset);
+            },
+
             update: async () => {
 
-                scope.text = scope.$ref.textarea1.value;
+                scope.text = scope.$ref.textarea1.textContent;
                 await KaToolsV1.debounce(1000,1000000);
 
                 scope.result = await MicxSeoKeywordTool.query(scope.text, scope.lang, scope.method)
-
+                for (let keyw of scope.result.keywords)
+                    scope.$fn.highlight(keyw.keyword, "#ccc")
                 $tpl.render();
             },
             loadHtml: async (url) => {
                 scope.text = await MicxSeoKeywordTool.loadHtml(url);
-                scope.$ref.textarea1.value = scope.text;
+                scope.$ref.textarea1.textContent = scope.text;
                 await scope.$fn.update();
             },
             toggleFullsize: () => {
@@ -104,11 +129,11 @@ KaToolsV1.ce_define("seo-keyword-tool", function($tpl) {
         <div class="row h-100">
             <div class="col-8 position-relative">
 
-
-                <textarea ka.ref="'textarea1'" ka.on.keyup="$fn.update()" ka.on.change="$fn.update()" class="position-relative w-100 " style="height: 95%" placeholder="Bitte Text hier eingeben"></textarea>
+                <pre ka.ref="'textarea1'" contenteditable="true" ka.on.keyup="$fn.update()" ka.on.change="$fn.update()" class="position-relative w-100 " style="height: 95%">Text eingeben</pre>
+                <!--textarea ka.ref="'textarea1'" ka.on.keyup="$fn.update()" ka.on.change="$fn.update()" class="position-relative w-100 " style="height: 95%" placeholder="Bitte Text hier eingeben"></textarea-->
             </div>
 
-            <div class="col-4 h-100 position-relative">
+            <div class="col-4 h-100 position-relative" ka.if="result !== null">
 
                 <div class="card overflow-scroll p-1 mb-2 position-relative w-100" style="max-height:40%; height: 40%;" ka.if="result.important !== null">
                     <p class="fw-bold">Key Sentence</p>
@@ -129,7 +154,7 @@ KaToolsV1.ce_define("seo-keyword-tool", function($tpl) {
                             </tr>
                         </thead>
                         <tbody class=" " style="max-height: 120px">
-                        <tr ka.for="let keyword of result.keywords" >
+                        <tr ka.for="let keyword of result.keywords" ka.on.click="$fn.highlight(keyword.keyword, '#ccc')">
                             <td>[[keyword.keyword]]</td>
                             <td>[[keyword.num]]</td>
                             <td>[[ keyword.score.toPrecision(3) ]]</td>
