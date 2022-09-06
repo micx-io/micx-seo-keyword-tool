@@ -5,6 +5,7 @@ desc: ""
 origin: "http://localhost"
 allow_origins:
   - "http://localhost"
+  - "http://localhost:4000"
   - "https://leuffen.de"
 
 public:
