@@ -52,6 +52,7 @@ class AnalyzeCtrl implements RoutableCtrl
                 $api->setStopWords(new German());
                 break;
         }
+        $request->text = $this->sanitizeHtml($request->text);
         $request->text = str_replace("\n\n", ".", $request->text);
         $request->text = preg_replace("/\.+/", ".", $request->text);
 
@@ -79,6 +80,21 @@ class AnalyzeCtrl implements RoutableCtrl
     }
 
 
+    protected function sanitizeHtml (string $text) {
+        $text = preg_replace("|<!--.*?-->|msi", " ", $text);
+        $text = preg_replace("|(</.+?>)|msi", "$1\n", $text);
+        $text = preg_replace("|<script.*?>.*?</script>|msi", " ", $text);
+        $text = preg_replace("|<style.*?>.*?</style>|msi", " ", $text);
+        $text = preg_replace("|<template.*?>.*?</template>|msi", " ", $text);
+        $text = preg_replace("|<svg.*?>.*?</svg>|msi", " ", $text);
+        $text = strip_tags($text);
+
+        $text = preg_replace("/\n\s*\n+/m", "\n\n", $text);
+        $text = preg_replace("/\n +/m", "\n", $text);
+        return $text;
+    }
+
+
     public function loadHtml(ServerRequest $request) {
         $url = $request->getQueryParams()["url"] ?? throw new \InvalidArgumentException("Missing query paramm 'url'");
         $url = phore_url($url);
@@ -93,19 +109,10 @@ class AnalyzeCtrl implements RoutableCtrl
 
         ini_set("memory_limit", "8M");
         $text = phore_http_request($url)->withMethod("GET")->withTimeout(1, 2)->send()->getBody();
-        $text = preg_replace("|<!--.*?-->|msi", " ", $text);
-        $text = preg_replace("|(</.+?>)|msi", "$1\n", $text);
-        $text = preg_replace("|<script.*?>.*?</script>|msi", " ", $text);
-        $text = preg_replace("|<style.*?>.*?</style>|msi", " ", $text);
-        $text = preg_replace("|<template.*?>.*?</template>|msi", " ", $text);
-        $text = preg_replace("|<svg.*?>.*?</svg>|msi", " ", $text);
-        $text = strip_tags($text);
 
-        $text = preg_replace("/\n\s*\n+/m", "\n\n", $text);
-        $text = preg_replace("/\n +/m", "\n", $text);
 
         return [
-            "html"  => $text
+            "html"  => $this->sanitizeHtml($text)
         ];
     }
 
