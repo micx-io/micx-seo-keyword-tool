@@ -94,11 +94,11 @@ class AnalyzeCtrl implements RoutableCtrl
         ini_set("memory_limit", "8M");
         $text = phore_http_request($url)->withMethod("GET")->withTimeout(1, 2)->send()->getBody();
         $text = preg_replace("|<!--.*?-->|msi", " ", $text);
+        $text = preg_replace("|(</.+?>)|msi", "$1\n", $text);
         $text = preg_replace("|<script.*?>.*?</script>|msi", " ", $text);
         $text = preg_replace("|<style.*?>.*?</style>|msi", " ", $text);
         $text = preg_replace("|<template.*?>.*?</template>|msi", " ", $text);
         $text = preg_replace("|<svg.*?>.*?</svg>|msi", " ", $text);
-        $text = preg_replace("|(</.+?>)|msi", "$1\n", $text);
         $text = strip_tags($text);
 
         $text = preg_replace("/\n\s*\n+/m", "\n\n", $text);
