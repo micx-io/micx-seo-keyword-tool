@@ -108,7 +108,7 @@ KaToolsV1.ce_define("seo-keyword-tool", function($tpl) {
                 <textarea ka.ref="'textarea1'" ka.on.keyup="$fn.update()" ka.on.change="$fn.update()" class="position-relative w-100 " style="height: 95%" placeholder="Bitte Text hier eingeben"></textarea>
             </div>
 
-            <div class="col-4 h-100 position-relative">
+            <div class="col-4 h-100 position-relative" ka.if="result !== null">
 
                 <div class="card overflow-scroll p-1 mb-2 position-relative w-100" style="max-height:40%; height: 40%;" ka.if="result.important !== null">
                     <p class="fw-bold">Key Sentence</p>
