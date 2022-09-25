@@ -50,7 +50,7 @@ KaToolsV1.ce_define("seo-sidebar", async function($tpl) {
 
 }
 </style>
-<section class="card position-fixed bottom-0 start-0 end-0" style="padding-left: 10px; height: 45px; z-index: 99999;background-color: #ffffff">
+<section class="card position-fixed bottom-0 start-0 end-0" style="padding-left: 10px; height: 45px; z-index: 99999;background-color: #ffffff; font-family: Inter | sans-serif;" >
     <div class="overflow-scroll p-0 bg-white text-nowrap overflow-hidden" style="font-size: 10px">
         <span class="d-inline-block"  style="width: 100px;">Meta description:</span>
         [[ meta.desc ]]
