@@ -49,6 +49,13 @@ KaToolsV1.ce_define("seo-sidebar", async function($tpl) {
     padding-bottom: 60px;
 
 }
+
+.text-green {
+color: green;
+}
+.text-red {
+color: darkred;
+}
 </style>
 <section class="card position-fixed bottom-0 start-0 end-0" style="padding-left: 10px; height: 45px; z-index: 99999;background-color: #ffffff; font-family: Inter | sans-serif;" >
     <div class="overflow-scroll p-0 bg-white text-nowrap overflow-hidden" style="font-size: 10px">
@@ -57,7 +64,7 @@ KaToolsV1.ce_define("seo-sidebar", async function($tpl) {
     </div>
     <div ka.if="result !== null" class="overflow-scroll p-0 bg-white text-nowrap overflow-hidden" style="font-size: 10px">
         <span class="d-inline-block"  style="width: 100px;">Meta Keywords: </span>
-        <span ka.for="let keyword of kwResult" class="ms-2" ka.classlist.text-success="keyword.score > 0.5" ka.classlist.text-danger="keyword.score < 0.5">
+        <span ka.for="let keyword of kwResult" class="ms-2" ka.classlist.text-green="keyword.score > 0.5" ka.classlist.text-red="keyword.score < 0.5">
             <b>[[keyword.keyword]]</b> [[ keyword.score.toPrecision(3) ]]
         </span>
 
