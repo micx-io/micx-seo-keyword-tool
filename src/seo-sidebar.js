@@ -30,7 +30,7 @@ KaToolsV1.ce_define("seo-sidebar", async function($tpl) {
     console.log(scope);
     scope.kwResult = scope.meta.keywords.map(e => new Object({
         keyword: e,
-        score: parseFloat(scope.result.keywords.find(kw => kw.keyword === e)?.score)
+        score: (scope.result.keywords.find(kw => kw.keyword === e)?.score) ?? 0
     }));
 
     $tpl.render(scope);
