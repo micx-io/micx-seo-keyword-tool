@@ -69,7 +69,7 @@ class AnalyzeCtrl implements RoutableCtrl
             $return[] = [
                 "keyword" => $key,
                 "score" => $val,
-                "num" => substr_count(strtolower($request->text), $key)
+                "num" => substr_count(strtolower($request->text), trim(strtolower($key)))
             ];
         }
         return [
