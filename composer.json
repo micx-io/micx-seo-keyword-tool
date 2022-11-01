@@ -12,6 +12,7 @@
     "php": ">=8.1",
     "ext-json": "*",
     "ext-openssl": "*",
+    "ext-mbstring": "*",
     "brace/core": "*",
     "brace/dbg": "*",
     "brace/mod-session": "*",
