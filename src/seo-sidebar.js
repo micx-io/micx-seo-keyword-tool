@@ -1,5 +1,5 @@
 KaToolsV1.ce_define("seo-sidebar", async function($tpl) {
-
+    await KaToolsV1.sleep(500);
     let keywords = document.querySelector("meta[name='keywords']");
     if (keywords !== null) {
         keywords = keywords.getAttribute("content").split(",").map(i => i.trim().toLowerCase());
