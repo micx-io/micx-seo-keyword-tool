@@ -30,6 +30,7 @@ KaToolsV1.ce_define("seo-sidebar", async function($tpl) {
     console.log(scope);
     scope.kwResult = scope.meta.keywords.map(e => new Object({
         keyword: e,
+        num: (scope.result.keywords.find(kw => kw.keyword === e)?.num) ?? 0,
         score: (scope.result.keywords.find(kw => kw.keyword === e)?.score) ?? 0
     }));
 
@@ -65,7 +66,7 @@ color: darkred;
     <div ka.if="result !== null" class="overflow-scroll p-0 bg-white text-nowrap overflow-hidden" style="font-size: 10px">
         <span class="d-inline-block"  style="width: 100px;">Meta Keywords: </span>
         <span ka.for="let keyword of kwResult" class="ms-2" ka.classlist.text-green="keyword.score > 0.5" ka.classlist.text-red="keyword.score < 0.5">
-            <b>[[keyword.keyword]]</b> [[ keyword.score.toPrecision(3) ]]
+            <b>[[keyword.keyword]] [[keyword.num]] :</b> [[ keyword.score.toPrecision(3) ]]
         </span>
 
     </div>

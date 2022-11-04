@@ -55,6 +55,9 @@ class AnalyzeCtrl implements RoutableCtrl
         $request->text = $this->sanitizeHtml($request->text);
         $request->text = str_replace("\n\n", ". ", $request->text);
         $request->text = preg_replace("/\.+/", ". ", $request->text);
+        $request->text = preg_replace("/-/", " ", $request->text);
+
+        //file_put_contents("/tmp/demo.txt", $request->text);
 
         $keywords = $api->getOnlyKeyWords($request->text);
         $index = 0;
