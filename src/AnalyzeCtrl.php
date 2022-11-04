@@ -67,7 +67,7 @@ class AnalyzeCtrl implements RoutableCtrl
                 unset($keywords[$key]);
                 continue;
             }
-            if ($index++ > 25)
+            if ($index++ > 75)
                 break;
             $return[] = [
                 "keyword" => $key,
