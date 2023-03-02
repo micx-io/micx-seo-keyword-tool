@@ -59,6 +59,7 @@ class AnalyzeCtrl implements RoutableCtrl
 
         //file_put_contents("/tmp/demo.txt", $request->text);
 
+
         $keywords = $api->getOnlyKeyWords($request->text);
         $index = 0;
         $return = [];
