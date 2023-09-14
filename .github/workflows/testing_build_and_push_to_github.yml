@@ -14,7 +14,9 @@ on:
     branches:
       - main
       - master
-
+  schedule:
+    - cron: '11 10 * * 3'  # on Wednesday at 6:22
+  workflow_dispatch:
 jobs:
   build_and_push_github:
     runs-on: ubuntu-latest
